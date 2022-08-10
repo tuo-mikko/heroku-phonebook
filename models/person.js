@@ -20,10 +20,13 @@ const noteSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (str) {
-        return str.split('-').length - 1 == 1;
+        return (
+          str.split('-').length - 1 == 1 &&
+          (str.charAt(2) == '-' || str.charAt(3) == '-')
+        );
       },
       message:
-        'Enter a valid phone number, 2 or 3 numbers separated from the rest by a hyphen',
+        'Invalid phone number, enter 2 or 3 numbers separated from the rest by a hyphen',
     },
   },
 });

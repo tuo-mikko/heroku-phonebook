@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/* const mongoose = require('mongoose');
 
 const args = [...process.argv];
 
@@ -40,3 +40,5 @@ Person.find({}).then((result) => {
   mongoose.connection.close();
   process.exit(1);
 });
+
+*/

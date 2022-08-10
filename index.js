@@ -13,29 +13,6 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.static('build'));
 
-let persons = [
-  {
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122',
-    id: 1,
-  },
-  {
-    name: 'Andy Warhol',
-    number: '044-213-5543',
-    id: 2,
-  },
-  {
-    name: 'Marko Miettinen',
-    number: '04-05-022232',
-    id: 3,
-  },
-  {
-    name: 'Jaakko Läntinen',
-    number: '051-231-3341',
-    id: 4,
-  },
-];
-
 app.get('/', (req, res) => {
   res.send('<h1>Hello Phone!</h1>');
 });
@@ -47,26 +24,33 @@ app.get('/api/persons', (req, res) => {
 });
 
 app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
+  Person.findById(req.params.id).then((person) => {
+    if (person) {
+      res.json(person);
+    } else {
+      res.status(404).end();
+    }
+  });
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id);
-  persons = persons.filter((person) => person.id !== id);
-  res.status(204).end();
+  Person.deleteOne({ _id: req.params.id }).then(res.status(204).end());
 });
 
 app.get('/api/info', (req, res) => {
   const date = Date();
-  res.send(
-    `<p>Phonebook has info for ${persons.length} persons</p> <p>${date}</p>`
+  Person.find({}).then((persons) => {
+    res.send(
+      `<p>Phonebook has info for ${persons.length} persons</p> <p>${date}</p>`
+    );
+  });
+});
+
+app.put('/api/persons/:id', (req, res) => {
+  Person.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }).then(
+    (updatedPerson) => {
+      res.json(updatedPerson);
+    }
   );
 });
 
@@ -81,15 +65,14 @@ app.post('/api/persons/', (req, res) => {
     return res.status(400).json({ error: 'This person already exists' });
   }
 
-  const newPerson = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: Math.floor(Math.random() * 5000),
-  };
+  });
 
-  persons = persons.concat(newPerson);
-
-  res.json(newPerson);
+  person.save().then((savedPerson) => {
+    res.json(savedPerson);
+  });
 });
 
 const PORT = process.env.PORT;

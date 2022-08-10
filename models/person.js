@@ -13,7 +13,7 @@ mongoose
   });
 
 const noteSchema = new mongoose.Schema({
-  name: { type: String, required: true, minlength: 3 },
+  name: { type: String, minlength: 3, required: true },
   number: { type: String, required: true },
 });
 

@@ -18,8 +18,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/persons', (req, res) => {
-  Person.find({}).then((persons) => {
-    res.json(persons);
+  Person.find({}).then((person) => {
+    res.json(person);
   });
 });
 
@@ -59,10 +59,6 @@ app.post('/api/persons/', (req, res) => {
 
   if (!body.name || !body.number) {
     return res.status(400).json({ error: 'Name or number missing' });
-  }
-
-  if (persons.find((person) => person.name === body.name)) {
-    return res.status(400).json({ error: 'This person already exists' });
   }
 
   const person = new Person({

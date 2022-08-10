@@ -13,8 +13,8 @@ mongoose
   });
 
 const noteSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  number: { type: String, required: true, minlength: 3 },
+  name: { type: String, required: true, minlength: 3 },
+  number: { type: String, required: true },
 });
 
 noteSchema.set('toJSON', {

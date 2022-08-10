@@ -1,5 +1,3 @@
-const { response } = require('express')
-
 require('dotenv').config()
 
 const express = require('express')
@@ -54,7 +52,7 @@ app.put('/api/persons/:id', (req, res, next) => {
   const { name, number } = request.body
   Person.findByIdAndUpdate(
     { _id: req.params.id },
-    { content, important },
+    { name, number },
     { new: true, runValidators: true, context: 'query' }
   )
     .then((updatedPerson) => {

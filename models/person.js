@@ -6,7 +6,7 @@ console.log('connecting to', url)
 mongoose
   .connect(url)
   .then((result) => {
-    console.log('connected to MongoDB')
+    console.log('connected to MongoDB', result.models)
   })
   .catch((error) => {
     console.log('error connecting to MongoDB:', error.message)
@@ -21,8 +21,8 @@ const noteSchema = new mongoose.Schema({
     validate: {
       validator: function (str) {
         return (
-          str.split('-').length - 1 == 1 &&
-          (str.charAt(2) == '-' || str.charAt(3) == '-')
+          str.split('-').length - 1 === 1 &&
+          (str.charAt(2) === '-' || str.charAt(3) === '-')
         )
       },
       message:

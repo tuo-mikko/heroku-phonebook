@@ -14,7 +14,18 @@ mongoose
 
 const noteSchema = new mongoose.Schema({
   name: { type: String, minlength: 3, required: true },
-  number: { type: String, required: true },
+  number: {
+    type: String,
+    minlength: 3,
+    required: true,
+    validate: {
+      validator: function (str) {
+        return str.split('-').length - 1 == 1;
+      },
+      message:
+        'Enter a valid phone number, 2 or 3 numbers separated from the rest by a hyphen',
+    },
+  },
 });
 
 noteSchema.set('toJSON', {
